@@ -87,6 +87,7 @@ function addMarker(place) {
     });
   });
 }
+
 </script>
   </head>
   <body>
