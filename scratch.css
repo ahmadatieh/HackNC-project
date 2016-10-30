@@ -1,0 +1,17 @@
+#right
+{
+float: left;
+  width: 125px;
+  text-align: right;
+  margin: 2px 10px;
+  display: inline;
+}
+#table
+{
+  float: right;
+  text-align: center;
+  margin: 5px 20px;
+  display: inline;
+  	width: 19.5%
+}
+
