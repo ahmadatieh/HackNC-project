@@ -4,7 +4,6 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Waypoints in directions</title>
-    <button type="buton" id="next">Next</button>
     <style>
       #right-panel {
         font-family: 'Roboto','sans-serif';
@@ -55,12 +54,12 @@
     <div id="right-panel">
     <div>
     <b>Start:</b>
-    <input id="start"></input>
+    <input id="start" value="Charlotte, NC"></input>
     <br>
-
 
     <b>Waypoints:</b> <br>
       <form multiple id="waypoints">
+      <ol>
       <input>Waypoint 1</input>
       <input>Waypoint 2</input>
       <input>Waypoint 3</input>
@@ -69,11 +68,12 @@
       <input>Waypoint 6</input>
       <input>Waypoint 7</input>
       <input>Waypoint 8</input>
+      </ol>
     </form>
     <br>
 
     <b>End:</b>
-    <input id="end"> </input>
+    <input id="end" value="Charleston, SC"> </input>
     <br>
       <input type="submit" id="submit">
     </div>
@@ -97,12 +97,7 @@
         });
         infoWindow = new google.maps.InfoWindow();
         service = new google.maps.places.PlacesService(map);
-
-<!--        for(var i=0; i<wordArray[i]; i++){
-        map.addListener('idle', performSearch(wordArray[i]));
-      } -->
-
-        map.addListener('idle', performSearch());
+        map.addListener('idle', performSearch);
 
         directionsDisplay.setMap(map);
 
@@ -111,22 +106,13 @@
         });
       }
 
-  <!--    function performSearch(string) {
+      function performSearch() {
         var request = {
           bounds: map.getBounds(),
-          keyword: string
+          keyword: 'hinton james'
         };
         service.radarSearch(request, callback);
-      } -->
-
-      function performSearch() {
-            var request = {
-              bounds: map.getBounds(),
-              keyword: 'alderman'
-            };
-            service.radarSearch(request, callback);
-          }
-
+      }
 
       function callback(results, status) {
         if (status !== google.maps.places.PlacesServiceStatus.OK) {
@@ -144,8 +130,8 @@
           position: place.geometry.location,
           icon: {
             url: 'http://maps.gstatic.com/mapfiles/circle.png',
-            anchor: new google.maps.Point(14, 12),
-            scaledSize: new google.maps.Size(12, 19)
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(10, 17)
           }
         });
 
@@ -159,35 +145,6 @@
             infoWindow.open(map, marker);
           });
         });
-
-    var isZoom = false;
-
-    google.maps.event.addListener(marker, 'dblclick', function() {
-      service.getDetails(place, function(result, status) {
-        if (status !== google.maps.places.PlacesServiceStatus.OK) {
-          console.error(status);
-          return;
-        }
-      });
-         if(isZoom == true){
-         map.setZoom(15);
-         map.panTo(marker.position);
-         document.getElementById("waypoints[i]").value = result.name;
-         isZoom = false;
-         document.getElementById('button').onclick = function() {
-         map.clear;
-         continue;
-         }​;​
-//         if "Next" button is clicked, {map.clear; continue;}
-
-         }else{
-         map.setZoom(17);
-         map.panTo(marker.position);
-         isZoom = true;
-         }
-         //deleteMarkers(marker);
-         //array = [];
-  });
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -206,7 +163,7 @@
           origin: document.getElementById('start').value,
           destination: document.getElementById('end').value,
           waypoints: waypts,
-          optimizeWaypoints: true,
+          optimizeWaypoints: false,
           travelMode: 'WALKING'
         }, function(response, status) {
           if (status === 'OK') {
@@ -221,7 +178,8 @@
                   '</b><br>';
               summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
               summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+              summaryPanel.innerHTML += route.legs[i].distance.text + '<br>';
+              summaryPanel.innerHTML += route.legs[i].duration.text + '<br><br>';
             }
           } else {
             window.alert('Directions request failed due to ' + status);
